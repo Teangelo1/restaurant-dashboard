@@ -8,8 +8,9 @@ function queryData(zip, radius)
     const settings = {
         "async": true,
         "crossDomain": true,
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + ",radius=" + radius,
+        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + ",radius=" + radius, 
         "method": "GET",
+
         beforeSend: function(request) {
             request.setRequestHeader("Authorization", "Bearer F7FM9iQY3oq11KAZGmFC3bXRDNZpsF5szVoZ7Jt86xfusYBLbLTgOyNjoPysWlUy0Ka_IxJxC29EV2YJ-ORPBV3gT22fIB2G96_ObY-mtQV03YMMk5xEG5DJrewCYHYx");
         },
@@ -76,7 +77,7 @@ function populateData(page)  //3
             var name = $("<h6>").text(deliData.businesses[i].alias);
             var phone = $("<p>").html(deliData.businesses[i].phone);       
             var alias = $("<p>").html(deliData.businesses[i].categories[0].alias);
-            var price = $("<h6>").text("Price" + deliData.businesses[i].price);
+            var price = $("<h6>").text("Price " + deliData.businesses[i].price);
             var stars = $("<h6>").text("Stars " + deliData.businesses[i].rating);
             var mapDiv = $("<div>").addClass("product-card-thumbnail").attr("id", "googleMap" + i);
 
@@ -98,7 +99,7 @@ function populateData(page)  //3
                 zoom: 12,
                 center: coor,
               });
-              // The marker, positioned at Uluru
+              // The marker, positioned at restaurant coordinates
               const marker = new google.maps.Marker({
                 position: coor,
                 map: map,
@@ -106,21 +107,47 @@ function populateData(page)  //3
 
         }
 
-        // var address1 = data.businesses[i].location.address1;
-        // var city = data.businesses[i].location.city;
-        // var zip = data.businesses[i].location.zip_code;
-
-        // console.log(name + " " + alias +  " " + phone + " " +  price +  " " + rating +  " " + image + " " +  address1 +  " " + city +  " " + zip);
+        $("#mapLink").html("Click to view all");
+        $("#mapLink").show();
     }
 
 }
 
+function mapAll()
+{   
+    var marker;
+    var i;
+    const infowindow = new google.maps.InfoWindow();
+    const coor = { lat: deliData.businesses[0].coordinates.latitude, lng: deliData.businesses[0].coordinates.longitude};
+    const map = new google.maps.Map(document.getElementById("mapContainer"), {
+        zoom: 12,
+        center: coor,
+      });
+
+      for (i = 1; i <deliData.businesses.length; i++)
+      {
+          marker = new google.maps.Marker({
+            position: new google.maps.LatLng(deliData.businesses[i].coordinates.latitude, deliData.businesses[i].coordinates.longitude),
+            map: map
+          });
+
+          google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                 window.open(deliData.businesses[i].url, "_blank");
+            //   infowindow.setContent(deliData.businesses[i].alias);
+            //   infowindow.open(map, marker);
+            }
+          })(marker, i));
+      }
+}
 
 // queryData(48165, 1);
 
 $(document).ready(function () 
 {
-    $("#restaurantContainer").hide
+    $("#restaurantContainer").hide();
+    $("#mapLink").hide();
+
     $("#dineIn").click(function (event) 
     {   
         var zip = $("#findtext").val().trim();
@@ -136,5 +163,14 @@ $(document).ready(function ()
 
         queryData(zip, radius);
     });
+
+    $("#mapLink").click(function (event) 
+    {   
+        $("#restaurantContainer").hide();
+        $("#mapLink").hide();
+        $("#pagination").hide();
+        mapAll();
+    });
+
    
 });
