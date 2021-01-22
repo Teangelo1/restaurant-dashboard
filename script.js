@@ -1,14 +1,16 @@
 let deliData = null;
 let pageSize = 5;  //hold the number of objects we want up on the page
+let limit = 5;
+let offset = 0;
 
-function queryData(zip, radius, status)
+function queryData(zip, radius)
 {
     radius = parseInt(radius / 0.0022046);
     
     const settings = {
         "async": true,
         "crossDomain": true,
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=50&offset=0",
+        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=" + limit + "&offset=" + offset,
         "method": "GET",
 
         beforeSend: function(request) {
@@ -30,7 +32,6 @@ function queryData(zip, radius, status)
         {
             console.log(response);
         });
-        
 }
 
 function createPageination()
@@ -112,7 +113,6 @@ function populateData(page)  //3
 
 }
 
-
 function mapAll()
 {   
     var marker;
@@ -151,14 +151,6 @@ $(document).ready(function ()
         var radius = $("#findlocate").val().trim();
 
         queryData(zip, radius, "dine-in");
-    });
-
-    $("#delivery").click(function (event) 
-    {   
-        var zip = $("#findtext").val().trim();
-        var radius = $("#findlocate").val().trim();
-
-        queryData(zip, radius, "delivery");
     });
 
     $("#mapLink").click(function (event) 
