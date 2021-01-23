@@ -78,15 +78,14 @@ function populateData()
             var imgLink = $("<a>").attr("href", deliData.businesses[i].url).attr("target", "_blank");
             var image = $("<img>").attr("src", deliData.businesses[i].image_url).addClass("product-card-thumbnail-image");
             
-            var tmpName = deliData.businesses[i].alias;
-
-            var favDiv = $("<div>").addClass("favorite");
-            var favLink = $("<a>").attr("href", "#");
-            var favImage = $("<img>").attr("src", "/images/not-favorite.gif");
-
+            var tmpName = deliData.businesses[i].name;
             var name = tmpName.replace(/-/g, " ");
             $("<h6>").text(name);
             
+            var favDiv = $("<div>").addClass("favorite");
+            var favLink = $("<a>").attr("href", "#");
+            var favImage = $("<img>").attr("src", "./images/not-favorite.gif").addClass("product-card-favorite-image");
+
             var tmpPhone = deliData.businesses[i].phone; 
             if (tmpPhone) 
             {
@@ -102,7 +101,10 @@ function populateData()
 
             imgLink.append(image);
             imgDiv.append(imgLink);
+            favLink.append(favImage);
+            favDiv.append(favLink);
             card.append(imgDiv);
+            card.append(favDiv);
             card.append(name);
             card.append(phone);
             card.append(alias);
