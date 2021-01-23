@@ -77,8 +77,19 @@ function populateData()
             var imgDiv = $("<div>").addClass("product-card-thumbnail");
             var imgLink = $("<a>").attr("href", deliData.businesses[i].url).attr("target", "_blank");
             var image = $("<img>").attr("src", deliData.businesses[i].image_url).addClass("product-card-thumbnail-image");
-            var name = $("<h6>").text(deliData.businesses[i].alias);
-            var phone = $("<p>").html(deliData.businesses[i].phone);       
+            
+            var tmpName = deliData.businesses[i].alias;
+            var name = tmpName.replace(/-/g, " ");
+            $("<h6>").text(name);
+            
+            var tmpPhone = deliData.businesses[i].phone; 
+            if (tmpPhone) 
+            {
+                var phone = formatPhoneNumber(tmpPhone); 
+                console.log(phone);
+                $("<p>").html(phone);
+            }
+       
             var alias = $("<p>").html(deliData.businesses[i].categories[0].alias);
             var price = $("<h6>").text("Price " + deliData.businesses[i].price);
             var stars = $("<h6>").text("Stars " + deliData.businesses[i].rating);
@@ -113,6 +124,22 @@ function populateData()
     }
 
 }
+
+let formatPhoneNumber = (str) => {
+    //Filter only numbers from the input
+    let tmpCleaned = ('' + str).replace(/\D/g, '');
+    //remove the 1
+    let cleaned = tmpCleaned.slice(1);
+    
+    //Check if the input is of correct length
+    let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+    };
+  
+    return null
+  };
 
 function mapAll()
 {   
