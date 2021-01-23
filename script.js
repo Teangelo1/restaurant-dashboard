@@ -3,6 +3,7 @@ let pageSize = 5;  //hold the number of objects we want up on the page
 let pageOffset = 0;
 let zip = 0;
 let radius = 0;
+let favorites = [];
 
 function queryData()
 {
@@ -61,7 +62,7 @@ function createPageination(total)
     });
 }
 
-function populateData()  //3
+function populateData()  
 {
 
     var content = $("#restaurantContainer");
