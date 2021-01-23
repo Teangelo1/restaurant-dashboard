@@ -189,7 +189,7 @@ font-weight: bold;
   border: 1px dotted gray;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  word-wrap:break-word;
+    /* word-wrap:break-word; */
 }
 
 .product-card-thumbnail {
