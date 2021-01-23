@@ -1,16 +1,17 @@
 let deliData = null;
 let pageSize = 5;  //hold the number of objects we want up on the page
-let limit = 5;
-let offset = 0;
+let pageIndex = 0;
+let pageOffset = 0;
+let zip = 0;
+let radius = 0;
 
-function queryData(zip, radius)
+function queryData()
 {
-    radius = parseInt(radius / 0.0022046);
-    
+    var url = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=" + pageSize + "&offset=" + pageOffset;
     const settings = {
         "async": true,
         "crossDomain": true,
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=" + limit + "&offset=" + offset,
+        "url": url,
         "method": "GET",
 
         beforeSend: function(request) {
@@ -22,9 +23,15 @@ function queryData(zip, radius)
 
         .then(function (response) {
             console.log(response);
+
+            if (deliData === null)
+            {
+                createPageination(response.total);
+            }
+
             deliData = response;
-            createPageination();
-            populateData(1);
+
+            populateData();
             $("#contentMain").hide();
             $("#restaurantContainer").show(); 
         })
@@ -34,11 +41,11 @@ function queryData(zip, radius)
         });
 }
 
-function createPageination()
+function createPageination(pages)
 {
     var pagination = $("#pagination");
 
-    var length = Math.ceil(deliData.total / pageSize);
+    var length = Math.ceil(pages / pageSize);
 
     for (i=0; i < length; i++)
     {
@@ -50,23 +57,21 @@ function createPageination()
     {
         var element = event.target;
         var pageNumber = parseInt($(element).attr("data-index"));
-        populateData(pageNumber);
-    });
+        pageIndex = (pageNumber * pageSize) - pageSize;  //10
+        pageOffset = (pageNumber * pageSize);  //15
 
+        queryData();
+    });
 }
 
-function populateData(page)  //3
+function populateData()  //3
 {
 
     var content = $("#restaurantContainer");
     content.empty();
-    var pageIndex = (page * pageSize) - pageSize;  //10
-    var pageOffset = (page * pageSize);  //15
 
-    for (i = pageIndex; i < pageOffset; i++)  //while 1=10; i<15
+    for (i = 0; i < deliData.businesses.length; i++)  //while 1=10; i<15
     {
-        if (i < deliData.businesses.length)
-        {
             //make the elements to display the restaurants and append to the parent div
             var div = $("<div>").addClass("grid-x grid-margin-x small-up-2 medium-up-3");
             var card = $("<div>").addClass("product-card");
@@ -105,8 +110,6 @@ function populateData(page)  //3
                 map: map,
               });
 
-        }
-
         $("#mapLink").html("Click to view all");
         $("#mapLink").show();
     }
@@ -142,15 +145,19 @@ function mapAll()
 
 $(document).ready(function () 
 {
+    pageIndex = 1;
+    pageOffset = 0;   
+    
     $("#restaurantContainer").hide();
     $("#mapLink").hide();
 
     $("#dineIn").click(function (event) 
     {   
-        var zip = $("#findtext").val().trim();
-        var radius = $("#findlocate").val().trim();
+        zip = $("#findtext").val().trim();
+        radius = $("#findlocate").val().trim();
+        radius = parseInt(radius / 0.0022046);
 
-        queryData(zip, radius, "dine-in");
+        queryData();
     });
 
     $("#mapLink").click(function (event) 
