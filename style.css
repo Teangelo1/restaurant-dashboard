@@ -1,6 +1,6 @@
-*{
-  font-family: 'Dancing Script', cursive;
-}
+ *{
+  font-family: 'Cinzel', serif;
+} 
 
 .bg-wrapper {
     text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
@@ -143,7 +143,7 @@
 
   h2 {
   color: white;
-  font-family: 'Abril Fatface';
+  font-family: 'Cinzel', serif;
   align-items: center;
   
   /* -webkit-text-stroke: 1px darkgray; */
@@ -163,6 +163,12 @@
    background: gray;
   }
 
+  #dineIn {
+    margin-left: 100px;
+    font-size: 20px;
+    justify-content: center;
+  }
+
 
 /* ----------- */
 
@@ -172,19 +178,20 @@
   flex-direction: row;
 } 
 
-.row {
+ /* .row {
   max-width: 50rem;
   margin-right: auto;
   margin-left: auto;
   display: flex;
-  /* flex-flow: row wrap; */
-}
+   flex-flow: row wrap; 
+}  */
 
 p {
   color: white;
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
 }
+
 
 h6 {
 color: white;
@@ -194,25 +201,24 @@ font-weight: bold;
 }
 .product-card {
   background-color: transparent;
-  border: 1px dotted gray;
+  border: 3px solid gray;
   padding: 1rem;
   margin-bottom: 1.5rem;
-    /* word-wrap:break-word; */
 }
 
 .product-card-thumbnail {
   display: block;
   position: relative;
-  /* width: 180px;added */
-  /* height: 180px;added */
+   width: 180px; 
+   height: 180px; 
 }
 
 
 
 .product-card-thumbnail-image    /* added */
 {
-    width: 20%;
-    height: 20%;
+    width: 180px;
+    height: 180px;
 }
 
 
@@ -267,8 +273,15 @@ font-weight: bold;
     /* The height is 400 pixels */
     width: 100%;
     /* The width is the width of the web page */
+   /* justify-content: center; */
   }
 
   #mapLink {
-   justify-content: baseline;
+  display: flex;
+   justify-content: center;
+  }
+
+   #pagination {
+    margin-left: auto;
+  justify-content: center;
   }
