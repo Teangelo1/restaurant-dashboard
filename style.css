@@ -151,12 +151,12 @@
 
   .hero-search-filter-form-find {
     background: transparent;
-    border: gray 2px solid;
+    border: gray 0.13rem solid;
   }
   
   .hero-search-filter-form-near {
     background: transparent;
-    border: gray 2px solid;
+    border: gray 0.13rem solid;
   }
 
   .button {
@@ -177,14 +177,6 @@
   display: flex;
   flex-direction: row;
 } 
-
- /* .row {
-  max-width: 50rem;
-  margin-right: auto;
-  margin-left: auto;
-  display: flex;
-   flex-flow: row wrap; 
-}  */
 
 p {
   color: white;
@@ -282,6 +274,5 @@ font-weight: bold;
   }
 
    #pagination {
-    margin-left: auto;
-  justify-content: center;
+  text-align: center;
   }
