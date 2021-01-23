@@ -91,7 +91,7 @@ function populateData()
             {
                 var phone = formatPhoneNumber(tmpPhone); 
                 console.log(phone);
-                $("<p>").html(phone);
+                $("<p>").html("P: " + phone);
             }
        
             var alias = $("<p>").html(deliData.businesses[i].categories[0].alias);
@@ -104,8 +104,8 @@ function populateData()
             favLink.append(favImage);
             favDiv.append(favLink);
             card.append(imgDiv);
-            card.append(favDiv);
             card.append(name);
+            card.append(favDiv);
             card.append(phone);
             card.append(alias);
             card.append(price);
