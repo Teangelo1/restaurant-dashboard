@@ -79,6 +79,11 @@ function populateData()
             var image = $("<img>").attr("src", deliData.businesses[i].image_url).addClass("product-card-thumbnail-image");
             
             var tmpName = deliData.businesses[i].alias;
+
+            var favDiv = $("<div>").addClass("favorite");
+            var favLink = $("<a>").attr("href", "#");
+            var favImage = $("<img>").attr("src", "/images/not-favorite.gif");
+
             var name = tmpName.replace(/-/g, " ");
             $("<h6>").text(name);
             
