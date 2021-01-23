@@ -1,4 +1,4 @@
-let deliData = null;
+let deliData = null; 
 let pageSize = 5;  //hold the number of objects we want up on the page
 let pageIndex = 0;
 let pageOffset = 0;
@@ -56,10 +56,8 @@ function createPageination(pages)
     $("#pagination > a").click(function(event)
     {
         var element = event.target;
-        var pageNumber = parseInt($(element).attr("data-index"));
-        pageIndex = (pageNumber * pageSize) - pageSize;  //10
-        pageOffset = (pageNumber * pageSize);  //15
-
+        pageIndex = parseInt($(element).attr("data-index"));
+        pageOffset = (pageIndex * pageSize) - pageSize;  //10
         queryData();
     });
 }
