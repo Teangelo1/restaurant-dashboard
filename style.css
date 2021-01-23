@@ -166,10 +166,18 @@
 
 /* ----------- */
 
-#restaurantContainer
+ #restaurantContainer
 {
   display: flex;
   flex-direction: row;
+} 
+
+.row {
+  max-width: 50rem;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  /* flex-flow: row wrap; */
 }
 
 p {
@@ -195,17 +203,18 @@ font-weight: bold;
 .product-card-thumbnail {
   display: block;
   position: relative;
-  width: 180px;/* added */
-  height: 180px;/* added */
+  /* width: 180px;added */
+  /* height: 180px;added */
 }
 
 
 
 .product-card-thumbnail-image    /* added */
 {
-    width: 180px;
-    height: 180px;
+    width: 20%;
+    height: 20%;
 }
+
 
 .product-card-title {
   font-family: 'Open sans', sans-serif;
@@ -263,4 +272,3 @@ font-weight: bold;
   #mapLink {
    justify-content: baseline;
   }
-
