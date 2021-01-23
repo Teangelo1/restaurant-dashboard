@@ -82,7 +82,7 @@ function populateData()
             var name = tmpName.replace(/-/g, " ");
             $("<h6>").text(name);
             
-            var favDiv = $("<div>").addClass("favorite");
+            var favDiv = $("<div>").addClass("favorite");  //favIcon
             var favLink = $("<a>").attr("href", "#");
             var favImage = $("<img>").attr("src", "./images/not-favorite.gif").addClass("product-card-favorite-image");
 
