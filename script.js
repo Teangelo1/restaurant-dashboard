@@ -1,6 +1,5 @@
 let deliData = null; 
 let pageSize = 5;  //hold the number of objects we want up on the page
-let pageIndex = 0;
 let pageOffset = 0;
 let zip = 0;
 let radius = 0;
@@ -41,11 +40,11 @@ function queryData()
         });
 }
 
-function createPageination(pages)
+function createPageination(total)
 {
     var pagination = $("#pagination");
 
-    var length = Math.ceil(pages / pageSize);
+    var length = Math.ceil(total / pageSize);
 
     for (i=0; i < length; i++)
     {
@@ -56,8 +55,8 @@ function createPageination(pages)
     $("#pagination > a").click(function(event)
     {
         var element = event.target;
-        pageIndex = parseInt($(element).attr("data-index"));
-        pageOffset = (pageIndex * pageSize) - pageSize;  //10
+        var pageIndex = parseInt($(element).attr("data-index"));
+        pageOffset = (pageIndex * pageSize) - pageSize;  
         queryData();
     });
 }
@@ -143,7 +142,6 @@ function mapAll()
 
 $(document).ready(function () 
 {
-    pageIndex = 1;
     pageOffset = 0;   
     
     $("#restaurantContainer").hide();
