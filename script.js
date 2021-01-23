@@ -1,14 +1,17 @@
-let deliData = null;
+let deliData = null; 
 let pageSize = 5;  //hold the number of objects we want up on the page
+let pageOffset = 0;
+let zip = 0;
+let radius = 0;
+let favorites = [];
 
-function queryData(zip, radius)
+function queryData()
 {
-    radius = radius / 0.0022046;
-    
+    var url = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=" + pageSize + "&offset=" + pageOffset;
     const settings = {
         "async": true,
         "crossDomain": true,
-        "url": "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + ",radius=" + radius, 
+        "url": url,
         "method": "GET",
 
         beforeSend: function(request) {
@@ -19,11 +22,16 @@ function queryData(zip, radius)
     $.ajax(settings)
 
         .then(function (response) {
-
             console.log(response);
+
+            if (deliData === null)
+            {
+                createPageination(response.total);
+            }
+
             deliData = response;
-            createPageination();
-            populateData(1);
+
+            populateData();
             $("#contentMain").hide();
             $("#restaurantContainer").show(); 
         })
@@ -31,42 +39,37 @@ function queryData(zip, radius)
         {
             console.log(response);
         });
-        
 }
 
-function createPageination()
+function createPageination(total)
 {
     var pagination = $("#pagination");
 
-    var length = Math.ceil(deliData.businesses.length / pageSize);
+    var length = Math.ceil(total / pageSize);
 
     for (i=0; i < length; i++)
     {
-        var pageNumber = $("<a>").html(i + 1).attr("data-index", i +1);
+        var pageNumber = $("<a>").html(i + 1 + "  ").attr("data-index", i +1);
         pagination.append(pageNumber);
     }    
 
     $("#pagination > a").click(function(event)
     {
         var element = event.target;
-        var pageNumber = parseInt($(element).attr("data-index"));
-        populateData(pageNumber);
+        var pageIndex = parseInt($(element).attr("data-index"));
+        pageOffset = (pageIndex * pageSize) - pageSize;  
+        queryData();
     });
-
 }
 
-function populateData(page)  //3
+function populateData()  
 {
 
     var content = $("#restaurantContainer");
     content.empty();
-    var pageIndex = (page * pageSize) - pageSize;  //10
-    var pageOffset = (page * pageSize);  //15
 
-    for (i = pageIndex; i < pageOffset; i++)  //while 1=10; i<15
+    for (i = 0; i < deliData.businesses.length; i++)  //while 1=10; i<15
     {
-        if (i < deliData.businesses.length)
-        {
             //make the elements to display the restaurants and append to the parent div
             var div = $("<div>").addClass("column");
             var card = $("<div>").addClass("product-card");
@@ -105,8 +108,6 @@ function populateData(page)  //3
                 map: map,
               });
 
-        }
-
         $("#mapLink").html("Click to view all");
         $("#mapLink").show();
     }
@@ -117,7 +118,6 @@ function mapAll()
 {   
     var marker;
     var i;
-    const infowindow = new google.maps.InfoWindow();
     const coor = { lat: deliData.businesses[0].coordinates.latitude, lng: deliData.businesses[0].coordinates.longitude};
     const map = new google.maps.Map(document.getElementById("mapContainer"), {
         zoom: 12,
@@ -134,8 +134,6 @@ function mapAll()
           google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
                  window.open(deliData.businesses[i].url, "_blank");
-            //   infowindow.setContent(deliData.businesses[i].alias);
-            //   infowindow.open(map, marker);
             }
           })(marker, i));
       }
@@ -145,23 +143,18 @@ function mapAll()
 
 $(document).ready(function () 
 {
+    pageOffset = 0;   
+    
     $("#restaurantContainer").hide();
     $("#mapLink").hide();
 
     $("#dineIn").click(function (event) 
     {   
-        var zip = $("#findtext").val().trim();
-        var radius = $("#findlocate").val().trim();
+        zip = $("#findtext").val().trim();
+        radius = $("#findlocate").val().trim();
+        radius = parseInt(radius / 0.0022046);
 
-        queryData(zip, radius);
-    });
-
-    $("#delivery").click(function (event) 
-    {   
-        var zip = $("#findtext").val().trim();
-        var radius = $("#findlocate").val().trim();
-
-        queryData(zip, radius);
+        queryData();
     });
 
     $("#mapLink").click(function (event) 
