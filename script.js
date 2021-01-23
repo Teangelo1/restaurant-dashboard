@@ -71,7 +71,7 @@ function populateData()
     for (i = 0; i < deliData.businesses.length; i++)  //while 1=10; i<15
     {
             //make the elements to display the restaurants and append to the parent div
-            var div = $("<div>").addClass("grid-x grid-margin-x small-up-2 medium-up-3");
+            var div = $("<div>").addClass("column");
             var card = $("<div>").addClass("product-card");
 
             var imgDiv = $("<div>").addClass("product-card-thumbnail");
