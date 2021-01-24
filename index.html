@@ -1,52 +1,51 @@
 <!doctype html>
 <html class="no-js" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resturant Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css" integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
-
-    <link href="style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <div class="bg-wrapper">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resturant Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
+    integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="bg-wrapper">
+  </div>
+  <header class="hero-search-filter">
+    <div id="contentMain" class="hero-search-filter-content">
+      <h2 class="fas fa-utensils"> Find The Best Food Near You </h2>
+      <form class="hero-search-filter-form" action="">
+        <label for="findtext">Zip Code:</label>
+        <input id="findtext" class="hero-search-filter-form-find" type="text" />
+        <div class="divider">&nbsp;</div>
+        <label for="findlocate">Radius</label>
+        <input id="findlocate" class="hero-search-filter-form-near" type="text" />
+      </form>
+      <ul class="hero-search-filter-menu menu align-center">
+        <li><a href="#" id="dineIn"><i class="fa fa-cutlery" aria-hidden="true"></i> Feed Me!</a></li>
+      </ul>
     </div>
-    <header class="hero-search-filter">
-        <div id="contentMain" class="hero-search-filter-content">
-          <!-- <img class="hero-search-filter-logo" src="https://placehold.it/160x80" alt="" /> -->
-          <h2>Find The Best Food & Drinks Near You!</h2>
-          <form class="hero-search-filter-form" action="">
-            <label for="findtext">Zip Code:</label>
-            <input id="findtext" class="hero-search-filter-form-find" type="text" />
-            <div class="divider">&nbsp;</div>
-            <label for="findlocate">Radius</label>
-            <input id="findlocate" class="hero-search-filter-form-near" type="text" />
-          </form>
-          <ul class="hero-search-filter-menu menu align-center">
-            <li><a href="#" id="dineIn"><i class="fa fa-cutlery" aria-hidden="true"></i> Dine-In</a></li>
-            <li><a href="#" id="delivery"><i class="fa fa-cutlery" aria-hidden="true"></i> Delivery</a></li>
-          </ul>
-        </div>
-        <div id="restaurantContainer" class="row">
-        </div>
-        <a href="#" id="mapLink" class="fa fa-cutlery" aria-hidden="true"> </a>
-        <div id="pagination"></div>
-        <div id="mapContainer" style="height: 400px; width: 500px;">
-          
-        </div>
-
-
-    </header>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
-    <script 
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=populateData&libraries=&v=weekly"
-      defer
-    ></script>
-    <script src="script.js"></script>
+    <div id="restaurantContainer" class="row">
+    </div>
+    <a href="#" id="mapLink" class="fa fa-cutlery" aria-hidden="true"> </a>
+    <div id="pagination"></div>
+    <div id="mapContainer" style="height: 400px; width: 500px;">
+    </div>
+  </header>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"
+    integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&libraries=&v=weekly"
+    defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
