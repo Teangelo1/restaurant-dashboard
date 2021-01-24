@@ -1,4 +1,5 @@
-let deliData = null; 
+const favSvgHeart = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path ${fill} d=\"M12 4.435c-1.989-5.399-12-4.597-12 3.568 0 4.068 3.06 9.481 12 14.997 8.94-5.516 12-10.929 12-14.997 0-8.118-10-8.999-12-3.568z\"/></svg>";
+let deliData = null;
 let pageSize = 5;  //hold the number of objects we want up on the page
 let pageOffset = 0;
 let zip = 0;
@@ -32,8 +33,6 @@ function queryData()
             deliData = response;
 
             populateData();
-            $("#contentMain").hide();
-            $("#restaurantContainer").show(); 
         })
         .catch(function(response)
         {
@@ -78,34 +77,44 @@ function populateData()
             var imgLink = $("<a>").attr("href", deliData.businesses[i].url).attr("target", "_blank");
             var image = $("<img>").attr("src", deliData.businesses[i].image_url).addClass("product-card-thumbnail-image");
             
-            var tmpName = deliData.businesses[i].name;
-            var name = tmpName.replace(/-/g, " ");
-            $("<h6>").text(name);
+            var name = $("<h6>").text(deliData.businesses[i].name);
             
-            var favDiv = $("<div>").addClass("favorite");  //favIcon
-            var favLink = $("<a>").attr("href", "#");
-            var favImage = $("<img>").attr("src", "./images/not-favorite.gif").addClass("product-card-favorite-image");
-
-            var tmpPhone = deliData.businesses[i].phone; 
-            if (tmpPhone) 
+            var businessIndex = favorites.find(function(item, itemIndex) {  //see if the current business exixts in the favorites array
+                return item.id === deliData.businesses[i].id;  //look to see if id's match, if they do return the index to businessIndex
+            });
+            
+            var fill;      //fill color for favorite icon
+            var isFavorite; //true or false for to set the data-fvorite attribute
+            if(businessIndex)  //if not undefined
             {
-                var phone = formatPhoneNumber(tmpPhone); 
-                console.log(phone);
-                $("<p>").html("P: " + phone);
+                fill = "fill=\"#ff0000\"";
+                isFavorite = true;
             }
+            else
+            {
+                fill = "fill=\"#fff\"";
+                isFavorite = false;
+            }
+
+            var svgHeart = favSvgHeart.replace("${fill}", fill);
+            var favLink = $("<a>").attr("href", "#").attr("data-index", i).attr("data-favorite", isFavorite.toString()).addClass("heart-svg-icon").append(svgHeart);
+
+            var phoneContent = deliData.businesses[i].display_phone !== "" ? "P: " + deliData.businesses[i].display_phone : "P: N/A" ; 
+            var phone = $("<p>").html(phoneContent);
        
             var alias = $("<p>").html(deliData.businesses[i].categories[0].alias);
-            var price = $("<h6>").text("Price " + deliData.businesses[i].price);
+
+            var priceContent = deliData.businesses[i].price ? "Price " + deliData.businesses[i].price : "Price: N/A";
+            var price = $("<h6>").text(priceContent);
+
             var stars = $("<h6>").text("Stars " + deliData.businesses[i].rating);
             var mapDiv = $("<div>").addClass("product-card-thumbnail").attr("id", "googleMap" + i);
 
             imgLink.append(image);
             imgDiv.append(imgLink);
-            favLink.append(favImage);
-            favDiv.append(favLink);
             card.append(imgDiv);
             card.append(name);
-            card.append(favDiv);
+            card.append(favLink);
             card.append(phone);
             card.append(alias);
             card.append(price);
@@ -126,13 +135,114 @@ function populateData()
                 map: map,
               });
 
-        $("#mapLink").html("Click to view all");
+        $("#contentMain").hide();
+        $("#restaurantContainer").show();
         $("#mapLink").show();
+        $("#favoritesLink").show();
     }
+
+    $(".heart-svg-icon").click(function(event)
+    {
+        var element = event.target;
+        var deliIndex = parseInt($(element).parent().parent().attr("data-index"));
+        var deliFavorite = ($(element).parent().parent().attr("data-favorite") === "true");
+        console.log("deliFavorite: " + deliFavorite);
+        console.log("Deli: " + deliIndex);
+        setFavorite(deliIndex, deliFavorite, element);
+    });
 
 }
 
-let formatPhoneNumber = (str) => {
+function renderFavorites()
+{
+    var content = $("#favorites");
+    content.empty();
+
+    for (i = 0; i < favorites.length; i++)  //while 1=10; i<15
+    {
+            //make the elements to display the restaurants and append to the parent div
+            var div = $("<div>").addClass("column");
+            var card = $("<div>").addClass("product-card");
+
+            var imgDiv = $("<div>").addClass("product-card-thumbnail");
+            var imgLink = $("<a>").attr("href", favorites[i].url).attr("target", "_blank");
+            var image = $("<img>").attr("src", favorites[i].image_url).addClass("product-card-thumbnail-image");
+            
+            var name = $("<h6>").text(favorites[i].name);
+            
+            var fill= "fill=\"#ff0000\"";;      //fill color for favorite icon
+            var svgHeart = favSvgHeart.replace("${fill}", fill);
+            var favLink = $("<a>").attr("href", "#").attr("data-index", i).attr("data-favorite", "true").addClass("heart-svg-icon").append(svgHeart);
+
+            var phoneContent = favorites[i].display_phone !== "" ? "P: " + favorites[i].display_phone : "P: N/A" ; 
+            var phone = $("<p>").html(phoneContent);
+       
+            imgLink.append(image);
+            imgDiv.append(imgLink);
+            card.append(imgDiv);
+            card.append(name);
+            card.append(favLink);
+            card.append(phone);
+            div.append(card);
+            content.append(div);
+
+        $("#searchLink").html("Search");      
+        $("#searchLink").show();
+        content.show();
+    }
+
+    $(".heart-svg-icon").click(function(event)
+    {
+        var element = event.target;
+        var deliIndex = parseInt($(element).parent().parent().attr("data-index"));
+        var deliFavorite = ($(element).parent().parent().attr("data-favorite") === "true");
+        console.log("deliFavorite: " + deliFavorite);
+        console.log("Deli: " + deliIndex);
+        setFavorite(deliIndex, deliFavorite, element);
+    });
+}
+
+//load favorites from local storage to the favorites array
+function loadFavorites()
+{
+    var favoritesArray = localStorage.getItem("feedMe");
+    if (favoritesArray) //if not undefined
+    {
+      favorites = JSON.parse(favoritesArray);  //make sure there is a feedMe object in local storage
+    }
+    else {
+      localStorage.setItem("feedMe", JSON.stringify(favorites));  //if not make one and store it to local storage
+    }
+}
+
+function setFavorite(index, isFavorite, svgElement)
+{
+    var color = !isFavorite ? "#ff0000" : "#fff";  //if false make it red, true make it white
+    $(svgElement).attr("fill", color);
+
+    isFavorite = !isFavorite;
+    $(svgElement).parent().parent().attr("data-favorite", isFavorite.toString());
+
+    var deliBusinessId = deliData.businesses[index].id;  //get the id of the current business to make favorite/unfavorite
+
+    var businessIndex = favorites.find(function(item, itemIndex) {  //see if the current business exixts in the favorites array
+        return item.id === deliBusinessId;  //look to see if id's match, if they do return the index to businessIndex
+    });
+
+    if(businessIndex)  // if not undefined
+    {
+        favorites.splice(businessIndex, 1);  //remove busniess from the favorites array
+    }
+    else
+    {
+        favorites.push(deliData.businesses[index]); // save favorite        
+    }
+
+    localStorage.setItem("feedMe", JSON.stringify(favorites));  //convert to a string and sent to local storage
+}
+
+function formatPhoneNumber(str)
+{
     //Filter only numbers from the input
     let tmpCleaned = ('' + str).replace(/\D/g, '');
     //remove the 1
@@ -177,10 +287,14 @@ function mapAll()
 
 $(document).ready(function () 
 {
+    loadFavorites();
     pageOffset = 0;   
     
     $("#restaurantContainer").hide();
     $("#mapLink").hide();
+    $("#favoritesLink").show();
+    $("#favorites").hide();
+    $("#searchLink").hide();
 
     $("#dineIn").click(function (event) 
     {   
@@ -199,5 +313,23 @@ $(document).ready(function ()
         mapAll();
     });
 
-   
+    $("#favoritesLink").click(function (event) 
+    {   
+        $("#contentMain").hide();
+        $("#restaurantContainer").hide();
+        $("#favoritesLink").hide();
+        $("#mapLink").hide();
+        $("#pagination").hide();
+        renderFavorites();
+    });
+
+    $("#searchLink").click(function (event) 
+    {   
+        $("#contentMain").show();
+        $("#favoritesLink").show();
+        $("#favorites").hide();
+        $("#findtext").val("");
+        $("#findlocate").val("");
+    });
+    
 });
