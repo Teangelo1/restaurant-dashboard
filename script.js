@@ -139,6 +139,7 @@ function populateData()
         $("#restaurantContainer").show();
         $("#mapLink").show();
         $("#favoritesLink").show();
+        $("#pagination").show();
     }
 
     $(".heart-svg-icon").click(function(event)
@@ -172,7 +173,7 @@ function renderFavorites()
             
             var fill= "fill=\"#ff0000\"";;      //fill color for favorite icon
             var svgHeart = favSvgHeart.replace("${fill}", fill);
-            var favLink = $("<a>").attr("href", "#").attr("data-index", i).attr("data-favorite", "true").addClass("heart-svg-icon").append(svgHeart);
+            var favLink = $("<a>").attr("href", "#").attr("data-index", i).attr("data-favorite", "true").addClass("fav-heart-svg-icon").append(svgHeart);
 
             var phoneContent = favorites[i].display_phone !== "" ? "P: " + favorites[i].display_phone : "P: N/A" ; 
             var phone = $("<p>").html(phoneContent);
@@ -191,14 +192,13 @@ function renderFavorites()
         content.show();
     }
 
-    $(".heart-svg-icon").click(function(event)
+    $(".fav-heart-svg-icon").click(function(event)
     {
         var element = event.target;
-        var deliIndex = parseInt($(element).parent().parent().attr("data-index"));
-        var deliFavorite = ($(element).parent().parent().attr("data-favorite") === "true");
-        console.log("deliFavorite: " + deliFavorite);
-        console.log("Deli: " + deliIndex);
-        setFavorite(deliIndex, deliFavorite, element);
+        var favIndex = parseInt($(element).parent().parent().attr("data-index"));
+        favorites.splice(favIndex, 1);
+        localStorage.setItem("feedMe", JSON.stringify(favorites));  
+        renderFavorites();
     });
 }
 
@@ -281,6 +281,7 @@ function mapAll()
             }
           })(marker, i));
       }
+      $("#mapContainer").show();
 }
 
 // queryData(48165, 1);
@@ -302,7 +303,14 @@ $(document).ready(function ()
         radius = $("#findlocate").val().trim();
         radius = parseInt(radius / 0.0022046);
 
-        queryData();
+        if (zip === "" || radius === "")
+        {
+            return;
+        }
+        else
+        {
+            queryData();
+        }
     });
 
     $("#mapLink").click(function (event) 
@@ -310,6 +318,9 @@ $(document).ready(function ()
         $("#restaurantContainer").hide();
         $("#mapLink").hide();
         $("#pagination").hide();
+        $("#favoritesLink").show();
+        $("#searchLink").show();
+
         mapAll();
     });
 
@@ -319,7 +330,9 @@ $(document).ready(function ()
         $("#restaurantContainer").hide();
         $("#favoritesLink").hide();
         $("#mapLink").hide();
+        $("#mapContainer").hide();
         $("#pagination").hide();
+        $("#searchLink").show();
         renderFavorites();
     });
 
@@ -330,6 +343,7 @@ $(document).ready(function ()
         $("#favorites").hide();
         $("#findtext").val("");
         $("#findlocate").val("");
+        $("#mapContainer").hide();
+        $("#searchLink").hide();
     });
-    
 });
