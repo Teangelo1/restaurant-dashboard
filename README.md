@@ -45,7 +45,7 @@ THEN I am presented with a list of favorites from local storage.
 ![Favorites Page](./assets/images/favorites.gif)
 
 **If the user forgets a zip code or radius a modal will appear**
-![Home Page](./assets/images/radius.gif)
+![Home Page Modal](./assets/images/modal.gif)
 
 
 ## Challenges:
