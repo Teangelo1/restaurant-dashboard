@@ -1,4 +1,5 @@
- *{
+
+*{
   font-family: 'Cinzel', serif;
 } 
 
@@ -20,7 +21,7 @@
   }
 
 .hero-search-filter {
-    background: url("https://images.pexels.com/photos/115095/pexels-photo-115095.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") center center no-repeat;
+    /* background: url("https://images.pexels.com/photos/115095/pexels-photo-115095.jpeg?w=940&h=650&auto=compress&cs=tinysrgb") center center no-repeat; */
     height: 300px;
     background-size: cover;
     -webkit-align-items: center;
