@@ -48,7 +48,7 @@ function createPageination(total)
 
     for (i=0; i < length; i++)
     {
-        var pageNumber = $("<a>").html(i + 1 + "  ").attr("data-index", i +1);
+        var pageNumber = $("<a>").html(i + 1 + "  ").attr("data-index", i +1).addClass("pagination-page");
         pagination.append(pageNumber);
     }    
 
@@ -57,6 +57,8 @@ function createPageination(total)
         var element = event.target;
         var pageIndex = parseInt($(element).attr("data-index"));
         pageOffset = (pageIndex * pageSize) - pageSize;  
+        $("#pagination > a").removeClass("pagination-active-page").addClass("pagination-page");
+        $(element).removeClass("pagination-page").addClass("pagination-active-page");
         queryData();
     });
 }
@@ -70,14 +72,14 @@ function populateData()
     for (i = 0; i < deliData.businesses.length; i++)  //while 1=10; i<15
     {
             //make the elements to display the restaurants and append to the parent div
-            var div = $("<div>").addClass("column");
+            var div = $("<div>").addClass("cell large-auto text-center");
             var card = $("<div>").addClass("product-card");
 
             var imgDiv = $("<div>").addClass("product-card-thumbnail");
             var imgLink = $("<a>").attr("href", deliData.businesses[i].url).attr("target", "_blank");
             var image = $("<img>").attr("src", deliData.businesses[i].image_url).addClass("product-card-thumbnail-image");
             
-            var name = $("<h6>").text(deliData.businesses[i].name);
+            var name = $("<h6>").addClass("product-card-title").text(deliData.businesses[i].name);
             
             var businessIndex = favorites.find(function(item, itemIndex) {  //see if the current business exixts in the favorites array
                 return item.id === deliData.businesses[i].id;  //look to see if id's match, if they do return the index to businessIndex
@@ -134,6 +136,11 @@ function populateData()
                 position: coor,
                 map: map,
               });
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                     window.open(deliData.businesses[i].url, "_blank");
+                }
+              })(marker, i));
 
         $("#contentMain").hide();
         $("#restaurantContainer").show();
@@ -163,7 +170,7 @@ function renderFavorites()
     {
             //make the elements to display the restaurants and append to the parent div
             var div = $("<div>").addClass("column");
-            var card = $("<div>").addClass("product-card");
+            var card = $("<div>").addClass(" favorite-card product-card");
 
             var imgDiv = $("<div>").addClass("product-card-thumbnail");
             var imgLink = $("<a>").attr("href", favorites[i].url).attr("target", "_blank");
@@ -197,7 +204,7 @@ function renderFavorites()
         var element = event.target;
         var favIndex = parseInt($(element).parent().parent().attr("data-index"));
         favorites.splice(favIndex, 1);
-        localStorage.setItem("feedMe", JSON.stringify(favorites));  
+        localStorage.setItem("favorites", JSON.stringify(favorites));  
         renderFavorites();
     });
 }
@@ -205,13 +212,13 @@ function renderFavorites()
 //load favorites from local storage to the favorites array
 function loadFavorites()
 {
-    var favoritesArray = localStorage.getItem("feedMe");
+    var favoritesArray = localStorage.getItem("favorites");
     if (favoritesArray) //if not undefined
     {
-      favorites = JSON.parse(favoritesArray);  //make sure there is a feedMe object in local storage
+      favorites = JSON.parse(favoritesArray);  //make sure there is a favorites object in local storage
     }
     else {
-      localStorage.setItem("feedMe", JSON.stringify(favorites));  //if not make one and store it to local storage
+      localStorage.setItem("favorites", JSON.stringify(favorites));  //if not make one and store it to local storage
     }
 }
 
@@ -238,7 +245,7 @@ function setFavorite(index, isFavorite, svgElement)
         favorites.push(deliData.businesses[index]); // save favorite        
     }
 
-    localStorage.setItem("feedMe", JSON.stringify(favorites));  //convert to a string and sent to local storage
+    localStorage.setItem("favorites", JSON.stringify(favorites));  //convert to a string and sent to local storage
 }
 
 function formatPhoneNumber(str)
@@ -260,28 +267,55 @@ function formatPhoneNumber(str)
 
 function mapAll()
 {   
-    var marker;
-    var i;
-    const coor = { lat: deliData.businesses[0].coordinates.latitude, lng: deliData.businesses[0].coordinates.longitude};
-    const map = new google.maps.Map(document.getElementById("mapContainer"), {
-        zoom: 12,
-        center: coor,
-      });
 
-      for (i = 1; i <deliData.businesses.length; i++)
-      {
-          marker = new google.maps.Marker({
-            position: new google.maps.LatLng(deliData.businesses[i].coordinates.latitude, deliData.businesses[i].coordinates.longitude),
-            map: map
-          });
+    var businesses;
+    var url = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=" + zip + "&radius=" + radius + "&limit=50";
+    const settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": url,
+        "method": "GET",
 
-          google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-                 window.open(deliData.businesses[i].url, "_blank");
-            }
-          })(marker, i));
-      }
-      $("#mapContainer").show();
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", "Bearer F7FM9iQY3oq11KAZGmFC3bXRDNZpsF5szVoZ7Jt86xfusYBLbLTgOyNjoPysWlUy0Ka_IxJxC29EV2YJ-ORPBV3gT22fIB2G96_ObY-mtQV03YMMk5xEG5DJrewCYHYx");
+        },
+    };
+
+    $.ajax(settings)
+
+        .then(function (response) {
+            console.log(response);
+            businesses = response.businesses;
+            var marker;
+            var i;
+            const coor = { lat: businesses[0].coordinates.latitude, lng: businesses[0].coordinates.longitude};
+            const map = new google.maps.Map(document.getElementById("mapContainer"), {
+                zoom: 12,
+                center: coor,
+              });
+        
+              for (i = 0; i < businesses.length; i++)
+              {
+                  marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(businesses[i].coordinates.latitude, businesses[i].coordinates.longitude),
+                    map: map
+                  });
+        
+                  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                         window.open(businesses[i].url, "_blank");
+                    }
+                  })(marker, i));
+              }
+              $("#mapContainer").show();
+
+        })
+        .catch(function(response)
+        {
+            console.log(response);
+        });
+
+
 }
 
 // queryData(48165, 1);
@@ -297,18 +331,23 @@ $(document).ready(function ()
     $("#favorites").hide();
     $("#searchLink").hide();
 
-    $("#dineIn").click(function (event) 
+    // zip = 48104;
+    // radius = parseInt(5 / 0.0022046, 10);
+    // queryData();
+
+    $("#feedMe").click(function (event) 
     {   
         zip = $("#findtext").val().trim();
         radius = $("#findlocate").val().trim();
-        radius = parseInt(radius / 0.0022046);
 
         if (zip === "" || radius === "")
         {
-            return;
+             var modal = new Foundation.Reveal($("#exampleModal1"));
+             $("#exampleModal1").foundation('open');
         }
         else
         {
+            radius = parseInt(radius / 0.0022046);
             queryData();
         }
     });

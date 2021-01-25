@@ -15,12 +15,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
-  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="./assets/css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-  <div class="bg-wrapper">
-  </div>
+  <div class="bg-wrapper"></div>
   <header class="hero-search-filter">
     <div id="contentMain" class="hero-search-filter-content">
       <h2 class="fas fa-utensils"> Find The Best Food Near You </h2>
@@ -32,27 +31,41 @@
         <input id="findlocate" class="hero-search-filter-form-near" type="text" />
       </form>
       <ul class="hero-search-filter-menu menu align-center">
-        <li><a href="#" id="dineIn"><i class="fa fa-cutlery" aria-hidden="true"></i> Feed Me!</a></li>
+        <li><a href="#" id="feedMe"><i class="fa fa-cutlery" aria-hidden="true"></i> Feed Me!</a></li>
       </ul>
     </div>
-    <div id="restaurantContainer" class="row">
+    <div class="grid-container">
+      <div id="restaurantContainer" class="grid-x align-center"></div>
     </div>
+    <div class="text-center">
     <a href="#" id="searchLink" class="fa fa-cutlery" aria-hidden="true">Search</a>
-    <a href="#" id="favoritesLink" class="fa fa-cutlery" aria-hidden="true">View Favorites</a>
+    <a href="#" id="favoritesLink" class="" aria-hidden="true">View Favorites</a>
     <a href="#" id="mapLink" class="fa fa-cutlery" aria-hidden="true">View Map</a>
-    <div id="pagination"></div>
-    <div id="mapContainer" style="height: 400px; width: 500px;">
     </div>
-    <div id="favorites"></div>
+    <div id="pagination"></div>
+    <div id="mapContainer">
+    </div>
+
+    <div class="grid-container">
+      <div id="favorites" class="grid-x align-justify"></div>
+    </div>
 
   </header>
+
+  <div class="reveal text-center" id="exampleModal1" data-reveal>
+    <h1>I know you're hungry! </h1>
+    <p class="lead">You must enter a zip code and radius.</p>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"
-    integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js" integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&libraries=&v=weekly"
     defer></script>
-  <script src="script.js"></script>
+  <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
