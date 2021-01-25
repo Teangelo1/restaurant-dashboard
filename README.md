@@ -33,16 +33,16 @@ THEN I am presented with a list of favorites from local storage.
 #What exactly will the user experience look like?
 
 **The user will enter a zip code & radius**
-![Home Page](images/search.gif)
+![Home Page](./assets/images/search.gif)
 
 **Next the user then will be presented with the restaurant name, ability to save a favorite, phone number, rating, price point and google map of the location.**
-![Results Page](images/results.gif)
+![Results Page](./assets/images/results.gif)
 
 **The user will have the option to view all the restaurants at once with a map view**
-![Map Page](images/map.gif)
+![Map Page](./assets/images/map.gif)
 
 **Next the user will have the option to save restaurants in a favorites list by selecting the heart icon above the food options then view them on a seperate page.**
-![Favorites Page](images/favorites.gif)
+![Favorites Page](./assets/images/favorites.gif)
 
 
 ## Challenges:
