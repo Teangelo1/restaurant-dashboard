@@ -1,6 +1,6 @@
 #Restaurant Dashboard 
 
-##Developers: 
+## Developers: 
 * **Teangelo Burks**
 * **Jody Brzovski**
 * **Cheyenne Nickelberry**
